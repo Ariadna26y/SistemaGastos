@@ -42,10 +42,10 @@ CREATE DATABASE SistemaGastosDB;
 ## Screenshots
 
 ### Dashboard
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](capturas%20de%20pantalla/panel%20de%20control.png)
 
 ### Mis Gastos
-![Mis Gastos](screenshots/gastos.png)
+![Mis Gastos](capturas%20de%20pantalla/gastos.png)
 
 ## Desarrollado por
 
