@@ -42,7 +42,7 @@ CREATE DATABASE SistemaGastosDB;
 ## Screenshots
 
 ### Dashboard
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](<panel de control.png>)
 
 ### Mis Gastos
 ![Mis Gastos](gastos.png)
