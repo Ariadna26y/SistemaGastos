@@ -1,0 +1,131 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container mt-2">
+
+    <h2 class="mb-4"><i class="bi bi-speedometer2 me-2"></i>Dashboard</h2>
+
+    <!-- Tarjetas de resumen -->
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-md-4">
+            <div class="card text-white h-100" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-1" style="font-size:13px; opacity:0.85;">Total Ingresos</p>
+                            <h3 class="mb-0 fw-bold">$@ViewBag.TotalIngresos.ToString("N2")</h3>
+                        </div>
+                        <i class="bi bi-arrow-up-circle" style="font-size: 2.5rem; opacity:0.7;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card text-white h-100" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-1" style="font-size:13px; opacity:0.85;">Total Gastos</p>
+                            <h3 class="mb-0 fw-bold">$@ViewBag.TotalGastos.ToString("N2")</h3>
+                        </div>
+                        <i class="bi bi-arrow-down-circle" style="font-size: 2.5rem; opacity:0.7;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card text-white h-100" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-1" style="font-size:13px; opacity:0.85;">Balance</p>
+                            <h3 class="mb-0 fw-bold">$@ViewBag.Balance.ToString("N2")</h3>
+                        </div>
+                        <i class="bi bi-wallet2" style="font-size: 2.5rem; opacity:0.7;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <!-- Gráfica por categoría -->
+        <div class="col-12 col-md-6">
+            <div class="card h-100">
+                <div class="card-header fw-semibold">
+                    <i class="bi bi-pie-chart me-2"></i>Gastos por Categoría
+                </div>
+                <div class="card-body d-flex align-items-center justify-content-center">
+                    <canvas id="graficaCategorias" style="max-height: 280px;"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Últimos movimientos -->
+        <div class="col-12 col-md-6">
+            <div class="card h-100">
+                <div class="card-header fw-semibold">
+                    <i class="bi bi-clock-history me-2"></i>Últimos Movimientos
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        @foreach (var gasto in ViewBag.UltimosGastos)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="mb-0 fw-500">@gasto.Descripcion</p>
+                                    <small class="text-muted">@gasto.Fecha.ToString("dd/MM/yyyy") · @gasto.Categoria?.Nombre</small>
+                                </div>
+                                @if (gasto.Tipo == "Ingreso")
+                                {
+                                    <span class="badge bg-success ms-2">+$@gasto.Monto.ToString("N2")</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger ms-2">-$@gasto.Monto.ToString("N2")</span>
+                                }
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var categorias = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+                    ((IEnumerable<dynamic>)ViewBag.PorCategoria).Select(x => x.Categoria).ToList()
+            ));
+    var totales = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+                ((IEnumerable<dynamic>)ViewBag.PorCategoria).Select(x => (decimal)x.Total).ToList()
+        ));
+
+    var ctx = document.getElementById('graficaCategorias').getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: categorias,
+            datasets: [{
+                data: totales,
+                backgroundColor: [
+                    '#667eea', '#f5576c', '#43e97b', '#f093fb',
+                    '#4facfe', '#fd79a8', '#fa709a', '#fee140',
+                    '#6c5ce7', '#e84393'
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom', labels: { font: { family: 'Poppins' } } }
+            }
+        }
+    });
+</script>
+}
+
