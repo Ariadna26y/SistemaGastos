@@ -1,4 +1,4 @@
-# MisGastos
+# Mis Gastos
 
 Sistema de gestión de gastos e ingresos personales desarrollado con ASP.NET Core MVC y SQL Server.
 
@@ -35,9 +35,9 @@ CREATE DATABASE SistemaGastosDB;
 
 4. Ejecutar el script de tablas que está en `/Database/setup.sql`
 
-5. Actualizar la cadena de conexión en `appsettings.json` con tu servidor
+5. Actualizar la cadena de conexión en `appsettings.json` con su servidor
 
-6. Presionar **F5** para correr la app
+6. Correr la app
 
 ## Screenshots
 
